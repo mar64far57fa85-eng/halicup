@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>حلی کاپ | سیستم مدیریت لیگ حرفه‌ای</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Poppins', sans-serif;
+            background: linear-gradient(145deg, #0a0f1a 0%, #03070f 100%);
+            color: #f0f4fa;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* هدر خفن */
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .badge-gold {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 215, 0, 0.12);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 200, 50, 0.5);
+            border-radius: 60px;
+            padding: 0.5rem 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FDE68A, #FCD34D, #FBBF24);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .sub {
+            color: #9ca3af;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* کارت‌ها */
+        .card {
+            background: rgba(18, 25, 40, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 1.5rem;
+            transition: 0.2s;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* دکمه مدیریت */
+        .btn-primary {
+            background: linear-gradient(95deg, #1e2a3a, #0f1722);
+            border: 1px solid #fbbf24;
+            color: #fef9c3;
+            padding: 0.7rem 1.3rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(95deg, #fbbf24, #eab308);
+            color: #0a0f1a;
+            transform: scale(1.02);
+        }
+        .btn-success {
+            background: linear-gradient(95deg, #0f766e, #0d9488);
+            border: none;
+            color: white;
+            font-weight: 800;
+            width: 100%;
+            padding: 0.85rem;
+            font-size: 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -8px #0d9488;
+        }
+        .btn-logout {
+            background: rgba(220, 38, 38, 0.8);
+            border: none;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-logout:hover {
+            background: #dc2626;
+        }
+        .btn-guest {
+            background: rgba(59, 130, 246, 0.8);
+            border: none;
+            color: white;
+            padding: 0.7rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 0.8rem;
+        }
+        .btn-guest:hover {
+            background: #3b82f6;
+        }
+
+        input, select {
+            background: #0b111e;
+            border: 1px solid #334155;
+            border-radius: 1.2rem;
+            padding: 0.8rem 1rem;
+            color: #f1f5f9;
+            font-size: 0.95rem;
+            width: 100%;
+            outline: none;
+        }
+        input:focus, select:focus {
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+        }
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: #fcd34d;
+            font-size: 0.85rem;
+        }
+
+        .team-item {
+            background: rgba(0, 0, 0, 0.45);
+            border-right: 4px solid #fbbf24;
+            padding: 0.7rem 1rem;
+            border-radius: 1rem;
+            margin-bottom: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .team-item:hover {
+            background: rgba(251, 191, 36, 0.15);
+        }
+        .delete-team {
+            background: none;
+            border: none;
+            color: #f87171;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* جدول لیگ */
+        .league-wrapper {
+            overflow-x: auto;
+            border-radius: 1.5rem;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 0.2rem;
+        }
+        .league-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            text-align: center;
+        }
+        .league-table th {
+            background: #111827cc;
+            padding: 12px 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #fcd34d;
+            text-transform: uppercase;
+        }
+        .league-table td {
+            background: rgba(15, 25, 40, 0.85);
+            padding: 12px 8px;
+            font-weight: 500;
+            border-radius: 14px;
+        }
+        .league-table tr:hover td {
+            background: rgba(251, 191, 36, 0.2);
+        }
+        .rank-1 td { background: linear-gradient(90deg, #2c2b1f, #1f1a0a); border-left: 3px solid #fbbf24; }
+        .rank-2 td { background: linear-gradient(90deg, #23262e, #161d2a); border-left: 3px solid #94a3b8; }
+        .rank-3 td { background: linear-gradient(90deg, #2a241a, #1f1a10); border-left: 3px solid #cd7f32; }
+        .stat-number { font-family: monospace; font-weight: 800; color: #facc15; }
+        .gd-positive { color: #4ade80; font-weight: 800; }
+        .gd-negative { color: #f87171; }
+        .pts-cell { font-size: 1.2rem; font-weight: 800; color: #fde047; }
+
+        .match-chip {
+            background: #11181f;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid #fbbf2440;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* پنل لاگین */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(14px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-box {
+            background: rgba(18, 25, 40, 0.98);
+            border-radius: 2rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 420px;
+            border: 1px solid #fbbf24;
+            box-shadow: 0 0 50px rgba(0,0,0,0.6);
+        }
+        .admin-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #fbbf2460;
+        }
+        .hidden-panel {
+            display: none;
+        }
+        .grid-3col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2rem;
+        }
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            h1 { font-size: 2rem; }
+            .league-table th, .league-table td { font-size: 0.7rem; padding: 8px 4px; }
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #fbbf24; border-radius: 8px; }
+        
+        /* راهنما */
+        .guide-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1e293bd9;
+            backdrop-filter: blur(12px);
+            border-radius: 1rem;
+            padding: 0.6rem 1rem;
+            font-size: 0.7rem;
+            border-left: 3px solid #fbbf24;
+            cursor: pointer;
+            z-index: 99;
+            font-family: monospace;
+        }
+        .guide-box:hover {
+            background: #0f172ae6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- بخش مدیریت نوار بالا (فقط برای مدیر قابل مشاهده است) -->
+    <div id="adminBar" class="hidden-panel">
+        <div class="admin-bar">
+            <div><i class="fas fa-user-shield"></i> <strong>پنل مدیریت</strong> <span style="color:#fbbf24;">|</span> شما وارد شدید</div>
+            <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> خروج از مدیریت</button>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="badge-gold"><i class="fas fa-crown"></i> لیگ حلی <i class="fas fa-trophy"></i></div>
+        <h1><i class="fas fa-futbol"></i> جدول حلی کاپ <i class="fas fa-chart-line"></i></h1>
+        <div class="sub">رتبه‌بندی لحظه‌ای | آمار کامل | مدیریت حرفه‌ای</div>
+    </div>
+
+    <!-- بخش مدیریتی (فقط ادمین می‌بیند) -->
+    <div id="adminPanel" class="hidden-panel">
+        <div class="grid-3col">
+            <!-- ستون مدیریت تیم‌ها -->
+            <div class="card">
+                <div style="display: flex; gap: 10px; border-bottom: 2px solid #fbbf2460; padding-bottom: 12px; margin-bottom: 1rem;">
+                    <i class="fas fa-users" style="font-size: 1.6rem; color: #fbbf24;"></i>
+                    <h2 style="font-size: 1.4rem; font-weight: 700;">مدیریت تیم‌ها</h2>
+                </div>
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" id="teamNameInput" placeholder="نام تیم (مثل پرسپولیس)">
+                    <button id="addTeamBtn" class="btn-primary"><i class="fas fa-plus-circle"></i> افزودن</button>
+                </div>
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span><i class="fas fa-list"></i> لیست تیم‌ها</span>
+                        <span id="teamsCount" style="background:#00000060; padding:2px 10px; border-radius: 30px;">0</span>
+                    </div>
+                    <div id="teamsListContainer" style="max-height: 340px; overflow-y: auto;"></div>
+                </div>
+            </div>
+
+            <!-- ستون ثبت بازی -->
+            <div class="card">
+                <div style="display: flex; gap: 10px; border-bottom: 2px solid #fbbf2460; padding-bottom: 12px; margin-bottom: 1rem;">
+                    <i class="fas fa-futbol" style="font-size: 1.6rem; color: #fbbf24;"></i>
+                    <h2 style="font-size: 1.4rem; font-weight: 700;">ثبت بازی جدید</h2>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label><i class="fas fa-flag-checkered"></i> تیم میزبان (تیم ۱)</label>
+                    <select id="team1Select"><option value="">-- انتخاب کنید --</option></select>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label><i class="fas fa-flag"></i> تیم مهمان (تیم ۲)</label>
+                    <select id="team2Select"><option value="">-- انتخاب کنید --</option></select>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label><i class="fas fa-chart-simple"></i> نتیجه (مثال: ۳-۱)</label>
+                    <input type="text" id="matchScore" placeholder="گل تیم۱ - گل تیم۲" style="text-align: center;">
+                </div>
+                <button id="submitMatchBtn" class="btn-success"><i class="fas fa-save"></i> ثبت نتیجه و بروزرسانی جدول</button>
+                <div style="margin-top: 0.8rem; font-size: 0.7rem; text-align: center; color: #cbd5e1;">برد=۳ امتیاز، مساوی=۱، باخت=۰</div>
+            </div>
+
+            <!-- ستون جدول -->
+            <div class="card">
+                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #fbbf2460; padding-bottom: 10px; margin-bottom: 1rem;">
+                    <div style="display: flex; gap: 10px;"><i class="fas fa-table-list" style="font-size: 1.5rem; color: #fbbf24;"></i><h2 style="font-size: 1.4rem;">جدول حلی کاپ</h2></div>
+                    <span style="background:#00000060; padding: 4px 12px; border-radius: 50px; font-size: 0.7rem;">MP W D L GD PTS</span>
+                </div>
+                <div class="league-wrapper">
+                    <table class="league-table" id="leagueTable">
+                        <thead><tr><th>رتبه</th><th style="text-align:right;">تیم</th><th>MP</th><th>W</th><th>D</th><th>L</th><th>+/−</th><th>PTS</th></tr></thead>
+                        <tbody id="leagueTableBody"><tr><td colspan="8" style="text-align:center;">در حال بارگذاری......</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- بخش نتایج اخیر (فقط ادمین می‌بیند) -->
+        <div class="card" style="margin-top: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <div><i class="fas fa-history"></i> <strong>تاریخچه مسابقات ثبت‌شده</strong></div>
+                <span id="matchesCountBadge" style="background:#00000070; border-radius: 30px; padding: 4px 12px;">۰ بازی</span>
+            </div>
+            <div id="recentMatchesList" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 15px; max-height: 90px; overflow-y: auto;">
+                <span style="color:#6b7280;">هیچ بازی ثبت نشده</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- بخش نمایش عمومی (فقط جدول و نتایج، بدون کنترل مدیریت) -->
+    <div id="publicView">
+        <div class="card">
+            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #fbbf2460; padding-bottom: 10px; margin-bottom: 1rem;">
+                <div style="display: flex; gap: 10px;"><i class="fas fa-table-list" style="font-size: 1.5rem; color: #fbbf24;"></i><h2 style="font-size: 1.4rem;">جدول حلی کاپ</h2></div>
+                <span style="background:#00000060; padding: 4px 12px; border-radius: 50px; font-size: 0.7rem;">جدول رسمی مسابقات</span>
+            </div>
+            <div class="league-wrapper">
+                <table class="league-table">
+                    <thead><tr><th>رتبه</th><th style="text-align:right;">تیم</th><th>MP</th><th>W</th><th>D</th><th>L</th><th>+/−</th><th>PTS</th></tr></thead>
+                    <tbody id="publicLeagueTableBody"><tr><td colspan="8" style="text-align:center;">در حال بارگذاری......</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card" style="margin-top: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div><i class="fas fa-clock"></i> <strong>نتایج اخیر</strong></div>
+                <span id="publicMatchesCount" style="background:#00000070; border-radius: 30px; padding: 4px 12px;">۰ بازی</span>
+            </div>
+            <div id="publicRecentMatches" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 15px;">
+                <span style="color:#6b7280;">منتظر ثبت نتایج جدید...</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- راهنمای ساخت لینک -->
+<div class="guide-box" id="guideBtn">
+    <i class="fas fa-link"></i> چگونه لینک بسازیم؟
+</div>
+
+<script>
+    // ---------- STATE ----------
+    let teams = [];
+    let matches = [];   // { team1, team2, score1, score2 }
+    let isAdmin = false;
+
+    // DOM elements (Admin panel)
+    const adminPanel = document.getElementById('adminPanel');
+    const adminBar = document.getElementById('adminBar');
+    const publicView = document.getElementById('publicView');
+    const teamNameInput = document.getElementById('teamNameInput');
+    const addTeamBtn = document.getElementById('addTeamBtn');
+    const teamsListContainer = document.getElementById('teamsListContainer');
+    const teamsCountSpan = document.getElementById('teamsCount');
+    const team1Select = document.getElementById('team1Select');
+    const team2Select = document.getElementById('team2Select');
+    const matchScoreInput = document.getElementById('matchScore');
+    const submitMatchBtn = document.getElementById('submitMatchBtn');
+    const leagueTableBody = document.getElementById('leagueTableBody');
+    const recentMatchesList = document.getElementById('recentMatchesList');
+    const matchesCountBadge = document.getElementById('matchesCountBadge');
+    // public elements
+    const publicLeagueTableBody = document.getElementById('publicLeagueTableBody');
+    const publicRecentMatches = document.getElementById('publicRecentMatches');
+    const publicMatchesCount = document.getElementById('publicMatchesCount');
+    const guideBtn = document.getElementById('guideBtn');
+
+    // helpers
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+    function showMessage(msg, isError=false) {
+        let div = document.createElement('div');
+        div.innerText = msg;
+        div.style.position = 'fixed';
+        div.style.bottom = '20px';
+        div.style.left = '20px';
+        div.style.backgroundColor = isError ? '#b91c1cee' : '#0f766eee';
+        div.style.color = 'white';
+        div.style.padding = '10px 24px';
+        div.style.borderRadius = '40px';
+        div.style.fontWeight = 'bold';
+        div.style.zIndex = '9999';
+        div.style.backdropFilter = 'blur(8px)';
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 2200);
+    }
+
+    // محاسبه جدول
+    function computeStandings() {
+        let stats = new Map();
+        teams.forEach(t => stats.set(t, { mp:0, w:0, d:0, l:0, gf:0, ga:0, pts:0 }));
+        for(let m of matches) {
+            if(!stats.has(m.team1) || !stats.has(m.team2)) continue;
+            let s1 = stats.get(m.team1), s2 = stats.get(m.team2);
+            s1.mp++; s2.mp++;
+            s1.gf += m.score1; s1.ga += m.score2;
+            s2.gf += m.score2; s2.ga += m.score1;
+            if(m.score1 > m.score2) { s1.w++; s2.l++; s1.pts+=3; }
+            else if(m.score1 < m.score2) { s2.w++; s1.l++; s2.pts+=3; }
+            else { s1.d++; s2.d++; s1.pts+=1; s2.pts+=1; }
+            stats.set(m.team1, s1); stats.set(m.team2, s2);
+        }
+        let arr = [];
+        for(let [team, data] of stats.entries()) {
+            arr.push({ team, mp: data.mp, w: data.w, d: data.d, l: data.l, gd: data.gf - data.ga, pts: data.pts });
+        }
+        arr.sort((a,b) => {
+            if(a.pts !== b.pts) return b.pts - a.pts;
+            if(a.gd !== b.gd) return b.gd - a.gd;
+            return a.team.localeCompare(b.team);
+        });
+        return arr;
+    }
+
+    function renderTableBody(tbodyElement) {
+        const standings = computeStandings();
+        if(standings.length === 0 || teams.length === 0) {
+            tbodyElement.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:2rem;">🏆 هنوز تیم یا بازی ثبت نشده 🏆</td></tr>`;
+            return;
+        }
+        let html = '';
+        standings.forEach((row, idx) => {
+            let rankClass = '';
+            if(idx===0) rankClass = 'rank-1';
+            else if(idx===1) rankClass = 'rank-2';
+            else if(idx===2) rankClass = 'rank-3';
+            let gdClass = row.gd >=0 ? 'gd-positive' : 'gd-negative';
+            let gdDisplay = row.gd >=0 ? `+${row.gd}` : `${row.gd}`;
+            html += `<tr class="${rankClass}">
+                        <td style="font-weight:800;">${idx+1}</td>
+                        <td style="text-align:right; font-weight:700;"><i class="fas fa-tag"></i> ${escapeHtml(row.team)}</td>
+                        <td class="stat-number">${row.mp}</td>
+                        <td style="color:#a3e635;">${row.w}</td>
+                        <td style="color:#facc15;">${row.d}</td>
+                        <td style="color:#f87171;">${row.l}</td>
+                        <td class="${gdClass}">${gdDisplay}</td>
+                        <td class="pts-cell">${row.pts}</td>
+                      </tr>`;
+        });
+        tbodyElement.innerHTML = html;
+    }
+
+    function updateAllTables() {
+        renderTableBody(leagueTableBody);
+        renderTableBody(publicLeagueTableBody);
+    }
+
+    function updateRecentMatches() {
+        // Admin version
+        if(matches.length === 0) {
+            recentMatchesList.innerHTML = '<span style="color:#6b7280;">📭 هیچ بازی ثبت نشده</span>';
+            matchesCountBadge.innerText = '۰ بازی';
+        } else {
+            matchesCountBadge.innerText = `${matches.length} بازی`;
+            let last = [...matches].reverse().slice(0,8);
+            let chips = '';
+            last.forEach(m => { chips += `<div class="match-chip"><i class="fas fa-futbol" style="color:#fbbf24;"></i> ${escapeHtml(m.team1)} <strong>${m.score1} - ${m.score2}</strong> ${escapeHtml(m.team2)}</div>`; });
+            recentMatchesList.innerHTML = chips;
+        }
+        // Public version
+        if(matches.length === 0) {
+            publicRecentMatches.innerHTML = '<span style="color:#6b7280;">📭 هنوز بازی ثبت نشده است</span>';
+            publicMatchesCount.innerText = '۰ بازی';
+        } else {
+            publicMatchesCount.innerText = `${matches.length} بازی`;
+            let last = [...matches].reverse().slice(0,8);
+            let chips = '';
+            last.forEach(m => { chips += `<div class="match-chip"><i class="fas fa-futbol" style="color:#fbbf24;"></i> ${escapeHtml(m.team1)} <strong>${m.score1} - ${m.score2}</strong> ${escapeHtml(m.team2)}</div>`; });
+            publicRecentMatches.innerHTML = chips;
+        }
+    }
+
+    function renderTeamsList() {
+        if(teams.length === 0) {
+            teamsListContainer.innerHTML = `<div style="text-align:center; color:#9ca3af; padding: 1.5rem;"><i class="fas fa-database"></i> هیچ تیمی وجود ندارد</div>`;
+            teamsCountSpan.innerText = '0';
+            return;
+        }
+        let html = '';
+        teams.forEach(team => {
+            html += `<div class="team-item"><span><i class="fas fa-shield-alt" style="color:#fbbf24;"></i> ${escapeHtml(team)}</span><button class="delete-team" data-team="${escapeHtml(team)}"><i class="fas fa-trash-alt"></i></button></div>`;
+        });
+        teamsListContainer.innerHTML = html;
+        teamsCountSpan.innerText = teams.length;
+        document.querySelectorAll('.delete-team').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                let teamName = btn.getAttribute('data-team');
+                if(confirm(`حذف تیم "${teamName}" تمام بازی‌های آن را پاک می‌کند. ادامه؟`)) {
+                    teams = teams.filter(t => t !== teamName);
+                    matches = matches.filter(m => m.team1 !== teamName && m.team2 !== teamName);
+                    renderTeamsList();
+                    updateSelectors();
+                    updateAllTables();
+                    updateRecentMatches();
+                    showMessage(`تیم ${teamName} حذف شد`);
+                }
+            });
+        });
+    }
+
+    function updateSelectors() {
+        let opt1 = '<option value="">-- انتخاب تیم --</option>';
+        let opt2 = '<option value="">-- انتخاب تیم --</option>';
+        teams.forEach(t => {
+            opt1 += `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`;
+            opt2 += `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`;
+        });
+        team1Select.innerHTML = opt1;
+        team2Select.innerHTML = opt2;
+    }
+
+    function addMatch() {
+        const t1 = team1Select.value;
+        const t2 = team2Select.value;
+        const scoreRaw = matchScoreInput.value.trim();
+        if(!t1 || !t2) { showMessage('هر دو تیم را انتخاب کنید', true); return; }
+        if(t1 === t2) { showMessage('تیم‌ها نباید یکسان باشند', true); return; }
+        const regex = /^(\d+)\s*[-–]\s*(\d+)$/;
+        const parsed = scoreRaw.match(regex);
+        if(!parsed) { showMessage('فرمت نتیجه صحیح نیست (مثال: 2-1)', true); return; }
+        let s1 = parseInt(parsed[1]), s2 = parseInt(parsed[2]);
+        if(isNaN(s1)||isNaN(s2)) { showMessage('گل‌ها عددی نیستند', true); return; }
+        matches.push({ team1: t1, team2: t2, score1: s1, score2: s2 });
+        matchScoreInput.value = '';
+        updateAllTables();
+        updateRecentMatches();
+        showMessage(`✅ ثبت شد: ${t1} ${s1} - ${s2} ${t2}`);
+    }
+
+    // نمایش مودال لاگین با گزینه ورود کاربر عادی
+    function showLoginModal() {
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'login-overlay';
+        modalDiv.innerHTML = `
+            <div class="login-box">
+                <div style="text-align:center; margin-bottom:1.5rem;">
+                    <i class="fas fa-futbol" style="font-size:2.5rem; color:#fbbf24;"></i>
+                    <h2 style="margin-top:0.5rem;">خوش آمدید</h2>
+                    <p style="font-size:0.8rem; color:#aaa;">حلی کاپ - سیستم مدیریت حرفه‌ای</p>
+                </div>
+                <input type="text" id="loginUsername" placeholder="نام کاربری مدیریت" style="margin-bottom:1rem;">
+                <input type="password" id="loginPassword" placeholder="رمز عبور مدیریت" style="margin-bottom:1rem;">
+                <button id="doLoginBtn" style="width:100%; background:#fbbf24; border:none; padding:0.8rem; border-radius:2rem; font-weight:bold; cursor:pointer; color:#000;"><i class="fas fa-user-shield"></i> ورود به پنل مدیریت</button>
+                <button id="guestLoginBtn" class="btn-guest"><i class="fas fa-eye"></i> ورود به عنوان کاربر عادی (فقط مشاهده جدول)</button>
+                <div style="text-align:center; margin-top:1rem; font-size:0.7rem; color:#aaa;">مدیریت: admin / 1234</div>
+            </div>
+        `;
+        document.body.appendChild(modalDiv);
+        
+        document.getElementById('doLoginBtn').addEventListener('click', () => {
+            const user = document.getElementById('loginUsername').value;
+            const pass = document.getElementById('loginPassword').value;
+            if(user === 'admin' && pass === '1234') {
+                isAdmin = true;
+                sessionStorage.setItem('arena_admin', 'true');
+                modalDiv.remove();
+                applyAdminMode();
+                showMessage('ورود موفقیت‌آمیز! پنل مدیریت فعال شد');
+            } else {
+                showMessage('نام کاربری یا رمز عبور اشتباه است', true);
+            }
+        });
+        
+        document.getElementById('guestLoginBtn').addEventListener('click', () => {
+            isAdmin = false;
+            sessionStorage.removeItem('arena_admin');
+            modalDiv.remove();
+            applyAdminMode();
+            showMessage('شما به عنوان کاربر عادی وارد شدید | فقط مشاهده جدول');
+        });
+    }
+
+    function applyAdminMode() {
+        if(isAdmin) {
+            adminPanel.classList.remove('hidden-panel');
+            adminBar.classList.remove('hidden-panel');
+            publicView.classList.add('hidden-panel');
+            renderTeamsList();
+            updateSelectors();
+            updateAllTables();
+            updateRecentMatches();
+        } else {
+            adminPanel.classList.add('hidden-panel');
+            adminBar.classList.add('hidden-panel');
+            publicView.classList.remove('hidden-panel');
+            updateAllTables();
+            updateRecentMatches();
+        }
+    }
+
+    // چک کردن sessionStorage
+    function checkAdminSession() {
+        const saved = sessionStorage.getItem('arena_admin');
+        if(saved === 'true') {
+            isAdmin = true;
+            applyAdminMode();
+        } else {
+            isAdmin = false;
+            applyAdminMode();
+            showLoginModal();
+        }
+    }
+
+    // Event listeners مدیریت
+    addTeamBtn?.addEventListener('click', () => {
+        let newTeam = teamNameInput.value.trim();
+        if(!newTeam) { showMessage('نام تیم را وارد کنید', true); return; }
+        if(teams.includes(newTeam)) { showMessage('تیم تکراری است', true); return; }
+        teams.push(newTeam);
+        teamNameInput.value = '';
+        renderTeamsList();
+        updateSelectors();
+        updateAllTables();
+        updateRecentMatches();
+        showMessage(`تیم ${newTeam} اضافه شد`);
+    });
+    submitMatchBtn?.addEventListener('click', () => { if(teams.length<2) { showMessage('حداقل دو تیم نیاز است', true); return; } addMatch(); });
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+        isAdmin = false;
+        sessionStorage.removeItem('arena_admin');
+        applyAdminMode();
+        showLoginModal();
+        showMessage('از پنل مدیریت خارج شدید');
+    });
+    
+    // راهنما
+    guideBtn.addEventListener('click', () => {
+        alert(`🌐 چگونه لینک سایت را بسازید و به اشتراک بگذارید:\n\n1️⃣ روش ساده (میزبانی محلی):\n   - فایل را با نام index.html ذخیره کنید\n   - برای دوستان بفرستید، آنها با دوبار کلیک باز می‌کنند\n\n2️⃣ تبدیل به لینک اینترنتی (رایگان):\n   • GitHub Gist: gist.github.com → فایل را آپلود کنید → raw link\n   • Netlify: netlify.com/drop → فایل را بکشید و رها کنید\n   • Vercel: vercel.com → آپلود ساده\n   • Replit: replit.com → پروژه HTML جدید بسازید\n\n3️⃣ اشتراک‌گذاری:\n   لینک ساخته شده را برای هرکسی بفرستید، آنها می‌توانند به عنوان کاربر عادی وارد شوند.\n\n💡 نکته: اطلاعات تیم‌ها و بازی‌ها در مرورگر همان کاربر ذخیره می‌شود.`);
+    });
+
+    // مقداردهی اولیه با دو تیم نمونه
+    if(teams.length === 0) { teams.push('آرسنال', 'منچسترسیتی'); }
+    checkAdminSession();
+    renderTeamsList();
+    updateSelectors();
+    updateAllTables();
+    updateRecentMatches();
+</script>
+</body>
+</html>
