@@ -493,4 +493,19 @@
         let div=document.createElement('div'); div.className='login-overlay';
         div.innerHTML=`<div class="login-box"><div style="text-align:center; margin-bottom:1.5rem;"><i class="fas fa-futbol" style="font-size:2.5rem; color:#fbbf24;"></i><h2>خوش آمدید</h2><p>حلی کاپ - پنل مدیریت</p></div><input type="text" id="loginUsername" placeholder="نام کاربری" style="margin-bottom:1rem;"><input type="password" id="loginPassword" placeholder="رمز عبور" style="margin-bottom:1rem;"><button id="doLoginBtn" style="width:100%; background:#fbbf24; border:none; padding:0.8rem; border-radius:2rem; font-weight:bold; cursor:pointer;">ورود به مدیریت</button><button id="guestLoginBtn" class="btn-guest">ورود به عنوان کاربر عادی</button><div style="text-align:center; margin-top:1rem; font-size:0.7rem;">مدیریت: admin / 1234</div></div>`;
         document.body.appendChild(div);
-        document.getElementById('doLoginBtn').onclick=()=>{ let u=document.getElementById('loginUsername').value, p=document.getElementById('loginPassword').value; if(u==='admin' && p==='1234') { isAdmin=true; sessionStorage.setItem('halicup_admin','true'); div.remove(); applyAdminMode(); showMessage('ورود موفق!'); } else showMessage('نام
+        document.getElementById('doLoginBtn').onclick=()=>{ let u=document.getElementById('loginUsername').value, p=document.getElementById('loginPassword').value; if(u==='admin' && p==='1234') { isAdmin=true; sessionStorage.setItem('halicup_admin','true'); div.remove(); applyAdminMode(); showMessage('ورود موفق!'); } else showMessage('نام کاربری یا رمز اشتباه',true); };
+        document.getElementById('guestLoginBtn').onclick=()=>{ isAdmin=false; sessionStorage.removeItem('halicup_admin'); div.remove(); applyAdminMode(); showMessage('ورود به عنوان کاربر عادی'); };
+    }
+    function applyAdminMode() { let a=document.getElementById('adminPanel'), b=document.getElementById('adminBar'), p=document.getElementById('publicView'); if(isAdmin) { a.classList.remove('hidden-panel'); b.classList.remove('hidden-panel'); p.classList.add('hidden-panel'); renderTeamsList(); updateSelectors(); updateAllTables(); updateRecentMatches(); } else { a.classList.add('hidden-panel'); b.classList.add('hidden-panel'); p.classList.remove('hidden-panel'); updateAllTables(); updateRecentMatches(); } }
+    function checkAdminSession() { if(sessionStorage.getItem('halicup_admin')==='true') { isAdmin=true; applyAdminMode(); } else { isAdmin=false; applyAdminMode(); showLoginModal(); } }
+
+    loadFromLocalStorage();
+    document.getElementById('addTeamBtn').onclick=()=>{ let newTeam=document.getElementById('teamNameInput').value.trim(); if(!newTeam) { showMessage('نام تیم را وارد کنید',true); return; } if(teams.includes(newTeam)) { showMessage('تیم تکراری است',true); return; } teams.push(newTeam); saveToLocalStorage(); document.getElementById('teamNameInput').value=''; renderTeamsList(); updateSelectors(); updateAllTables(); updateRecentMatches(); showMessage(`تیم ${newTeam} اضافه شد`); };
+    document.getElementById('submitMatchBtn').onclick=()=>{ if(teams.length<2) { showMessage('حداقل دو تیم نیاز است',true); return; } addMatch(); };
+    document.getElementById('logoutBtn').onclick=()=>{ isAdmin=false; sessionStorage.removeItem('halicup_admin'); applyAdminMode(); showLoginModal(); };
+    document.getElementById('guideBtn').onclick=()=>{ alert(`✅ امکانات:\n• افزودن/حذف تیم\n• ثبت بازی دو تیم\n• امتیازدهی دستی (+3,+1,0)\n• تغییر تفاضل گل دستی\n• همه چیز خودکار ذخیره می‌شود\n• بعد از رفرش، اطلاعات باقی می‌ماند`); };
+    checkAdminSession();
+    renderTeamsList(); updateSelectors(); updateAllTables(); updateRecentMatches();
+</script>
+</body>
+</html>
